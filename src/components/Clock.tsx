@@ -11,7 +11,7 @@ export default function Clock(){
      }, []);
      return (
           <div className="text-2xl font-mono text-center p-4">
-               {time.toLocaleTimeString()}
+               {time.toLocaleTimeString(undefined, { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 })}
           </div>
      );
 }
