@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
+import dayjs from "dayjs";
 
 export default function Clock(){
-     const [time, setTime] = useState(new Date());
+     const [time, setTime] = useState(dayjs());
 
      useEffect(() => {
           const interval = setInterval(() => {
-               setTime(new Date());               
+               setTime(dayjs());               
           }, 1);
           return () => clearInterval(interval);          
      }, []);
      return (
-          <div className="text-2xl font-mono text-center p-4">
-               {time.toLocaleTimeString()}
+          <div>
+               <div>{time.format("YYYY/MM/DD/dddd - HH:MM:ss.SSS")}</div>               
           </div>
      );
 }
