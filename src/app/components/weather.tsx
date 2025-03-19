@@ -13,7 +13,7 @@ export default function WeatherApp() {
           setError(null);
 
           try {
-               const res = await fetch('/api/weather?city=${city}');
+               const res = await fetch(`/api/weather?city=${city}`);
                const data = await res.json();
 
                if(data.error) {
@@ -45,8 +45,8 @@ export default function WeatherApp() {
                     <div>
                          <p>{weather.name}の天気</p>
                          <p>気温: {weather.main.temp}℃</p>
-                         <p>湿度: {weather.main.humidly}%</p>
-                         <p>風速: {weather.main.speed} m/s</p>
+                         <p>湿度: {weather.main.humidity}%</p>
+                         <p>風速: {weather.wind.speed} m/s</p>
                          <p>天候: {weather.weather[0].description}</p>
                </div>
                )}
