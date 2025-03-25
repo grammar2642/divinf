@@ -1,45 +1,58 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+"use client"
 
-const NewsList = () => {
-  const [news, setNews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const API_KEY = "d65873a8a31842d89ff7a16073560863"; // NewsAPIのAPIキー
-  const URL = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`;
+import { useState, useTransition } from "react"
+import { NewsData } from "@/types/news";
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const response = await axios.get(URL);
-        setNews(response.data.articles);
-      } catch (error) {
-        console.error("ニュース取得エラー:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchNews();
-  }, []);
+export default function GetNews() {
 
-  if (loading) return <p>Loading...</p>;
+  const [news, setNews] = useState<NewsData>();
+  const [isPending, startTransition] = useTransition();
+  const [country, setCountry] = useState("us");
 
+  const getNews = async() => {
+    startTransition(async() => {
+      const res = await fetch (`/api/news?country=${ country }`);
+      const data = await res.json();
+      setNews(data);
+    });
+  };
   return (
-    <div>
-      <h2>最新ニュース</h2>
-      <ul>
-        {news.map((article, index) => (
-          <li key={index}>
-            <h3>{article.title}</h3>
-            <p>{article.description}</p>
-            {article.urlToImage && <img src={article.urlToImage} alt={article.title} width="300" />}
-            <a href={article.url} target="_blank" rel="noopener noreferrer">
-              記事を読む
-            </a>
-          </li>
-        ))}
-      </ul>
+    <div className="items-center flex flex-col">
+      <h1 className="text-4xl p-5">NEWS</h1>
+      <input
+      className="
+      inline-block
+      text-2xl
+      text-center
+      items-center
+      border-1
+      rounded-full
+      mb-4
+      p-4
+      "
+      type="text"
+      value={country}
+      onChange={(e) => setCountry(e.target.value)}
+      placeholder="Enter country Code(sample: us, jp, kr, gb)"
+      />
+
+      <button onClick={getNews}
+      className="text-2xl p-5 border-1 rounded-full inline-grid mb-5"
+      >Getting News</button>
+
+      {isPending && <p>Now Loading...</p>}
+
+      {news && (
+        <ul className="flex flex-col divide-y-1 text-left text-lg leading-16">
+          {news.articles?.map((article: any, i: number) => (
+            <li key={i}>
+              <a href={article.url} target="_blank">
+                {article.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
-};
-
-export default NewsList;
+}
