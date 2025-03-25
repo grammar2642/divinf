@@ -1,7 +1,5 @@
-"use client"
-
 import Clock from "./components/Clock"
-import { WeatherApp } from "./components/weather"
+import WeatherApp from "./components/weather"
 
 
 export default function Home() {

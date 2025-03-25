@@ -1,16 +1,39 @@
-"use server";
+"use client";
 
-export async function WeatherApp() {
-  const city = "Tokyo";
-  try {
+import { useState } from "react";
+
+export default function WeatherApp() {
+
+  interface WData {
+    name: string;
+    weather: {
+      description: string;
+    }[];
+    main: {
+      temp: number;
+    };
+  }
+  const [weather, setWeather] = useState<WData >();
+const getWeather = async () => {  
     console.log("データ取得中です...");
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ja&appid=${process.env.OPENWEATHER_API_KEY}`
-    );
+    const response = await fetch("/api/weather");
     const data = await response.json();
     console.log(data);
-    return data;
-  } catch (error) {
-    console.log("データ取得エラー");
-  }
+    setWeather(data);
+    return data;    
+  };
+
+  return (
+    <>
+    <h1>天気API</h1>
+    <button onClick={getWeather}>GetWeather</button>
+    {weather && (
+      <div>
+        <p>都市:{weather.name}</p>
+        <p>天気:{weather.weather?.[0].description}</p>
+        <p>気温:{weather.main.temp}</p>
+    </div>
+    )}
+    </>
+  );
 }
