@@ -13,7 +13,7 @@ export default function WeatherApp() {
       temp: number;
     };
   }
-  const [weather, setWeather] = useState<WData >();
+  const [weather, setWeather] = useState<WData | null>();
 const getWeather = async () => {  
     console.log("データ取得中です...");
     const response = await fetch("/api/weather");
@@ -25,13 +25,15 @@ const getWeather = async () => {
 
   return (
     <>
-    <h1>天気API</h1>
-    <button onClick={getWeather}>GetWeather</button>
+    <h1 className="text-4xl">Weather API</h1>
+    <button 
+    className="text-3xl p-10"
+    onClick={getWeather}>GetWeather</button>
     {weather && (
-      <div>
-        <p>都市:{weather.name}</p>
-        <p>天気:{weather.weather?.[0].description}</p>
-        <p>気温:{weather.main.temp}</p>
+      <div className="text-2xl">
+        <p>City:{weather.name ?? "不明"}</p>
+        <p>Weather:{weather.weather?.[0]?.description ?? "不明"}</p>
+        <p>Temperature(Celcius):{weather.main?.temp ?? "不明"}℃</p>
     </div>
     )}
     </>

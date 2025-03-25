@@ -12,7 +12,7 @@ export default function Clock(){
           }
 
           updateTime()
-          const interval = setInterval(updateTime, 100)
+          const interval = setInterval(updateTime, 25)
           return () => clearInterval(interval);          
      }, [])
      return (
