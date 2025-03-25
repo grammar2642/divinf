@@ -49,7 +49,7 @@ const getWeather = async () => {
     className="text-3xl border-2 rounded-lg p-3 mb-5"
     onClick={getWeather} disabled={isPending}>{isPending ? "Now Loading..." : "Get Weather"}</button>
     {weather && (
-      <div className="text-2xl">
+      <div className="text-2xl text-left">
         <p>City:{weather.name ?? "不明"}</p>
         <p>Weather:{weather.weather?.[0]?.description ?? "不明"}</p>
         <p>Temperature(Celcius):{weather.main?.temp ?? "不明"}℃</p>
