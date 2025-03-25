@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         `https://api.openweathermap.org/data/2.5/weather?q=${place}&units=metric&lang=en&appid=${API}`
     );
     if (!res.ok) {
-        return NextResponse.json({ error: "Cannot approach the city"}, { status: 404});
+        return NextResponse.json({error: "Cannot approach the city"}, { status: 404 });
     }
     const data = await res.json();
     console.log("取得データ:", data);
